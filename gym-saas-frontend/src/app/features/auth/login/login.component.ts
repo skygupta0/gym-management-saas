@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
+import { ThemeService } from '../../../core/services/theme.service';
 import { FormErrorUtil } from '../../../core/util/form-error.util';
 import { ToastContainerComponent } from '../../../shared/components/toast-container/toast-container.component';
 
@@ -12,6 +13,13 @@ import { ToastContainerComponent } from '../../../shared/components/toast-contai
   imports: [CommonModule, ReactiveFormsModule, RouterLink, ToastContainerComponent],
   template: `
     <div class="login-layout">
+      <!-- Floating Top Theme Toggle -->
+      <div class="login-top-actions">
+        <button type="button" class="theme-toggle-btn" (click)="themeService.toggleTheme()" [title]="themeService.isDarkMode() ? 'Switch to Light Mode' : 'Switch to Dark Mode'">
+          <span>{{ themeService.isDarkMode() ? '☀️ Switch to Light Mode' : '🌙 Switch to Dark Mode' }}</span>
+        </button>
+      </div>
+
       <!-- Left Visual Showcase -->
       <div class="login-showcase">
         <div class="showcase-glow"></div>
@@ -143,6 +151,14 @@ import { ToastContainerComponent } from '../../../shared/components/toast-contai
       min-height: 100vh;
       display: flex;
       background: var(--bg-app);
+      position: relative;
+    }
+
+    .login-top-actions {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      z-index: 100;
     }
 
     /* Left Showcase */
@@ -371,6 +387,7 @@ import { ToastContainerComponent } from '../../../shared/components/toast-contai
 export class LoginComponent {
   private readonly fb = inject(FormBuilder);
   private readonly authService = inject(AuthService);
+  readonly themeService = inject(ThemeService);
   private readonly router = inject(Router);
 
   readonly isLoading = signal<boolean>(false);

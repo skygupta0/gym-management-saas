@@ -4,6 +4,8 @@ import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { ToastContainerComponent } from '../../shared/components/toast-container/toast-container.component';
 
+import { ThemeService } from '../../core/services/theme.service';
+
 @Component({
   selector: 'app-main-layout',
   standalone: true,
@@ -87,9 +89,9 @@ import { ToastContainerComponent } from '../../shared/components/toast-container
           </div>
 
           <div class="topbar-right">
-            <!-- Theme Toggle -->
-            <button class="icon-action-btn" (click)="toggleTheme()" title="Toggle Theme">
-              {{ isDarkMode() ? '☀️' : '🌙' }}
+            <!-- Theme Toggle Button -->
+            <button type="button" class="theme-toggle-btn" (click)="themeService.toggleTheme()" [title]="themeService.isDarkMode() ? 'Switch to Light Mode' : 'Switch to Dark Mode'">
+              <span>{{ themeService.isDarkMode() ? '☀️ Light Mode' : '🌙 Dark Mode' }}</span>
             </button>
 
             <!-- User Menu -->
@@ -509,23 +511,12 @@ import { ToastContainerComponent } from '../../shared/components/toast-container
 })
 export class MainLayoutComponent {
   readonly authService = inject(AuthService);
+  readonly themeService = inject(ThemeService);
   readonly isSidebarCollapsed = signal<boolean>(false);
-  readonly isDarkMode = signal<boolean>(true);
   readonly isUserMenuOpen = signal<boolean>(false);
 
   toggleSidebar(): void {
     this.isSidebarCollapsed.update(v => !v);
-  }
-
-  toggleTheme(): void {
-    this.isDarkMode.update(v => !v);
-    if (this.isDarkMode()) {
-      document.body.classList.remove('light-theme');
-      document.body.classList.add('dark-theme');
-    } else {
-      document.body.classList.remove('dark-theme');
-      document.body.classList.add('light-theme');
-    }
   }
 
   toggleUserMenu(): void {

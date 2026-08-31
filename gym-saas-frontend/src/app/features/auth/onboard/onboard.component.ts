@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
+import { ThemeService } from '../../../core/services/theme.service';
 import { BusinessType, TenantOnboardRequest } from '../../../core/models/auth.models';
 import { FormErrorUtil } from '../../../core/util/form-error.util';
 import { ToastContainerComponent } from '../../../shared/components/toast-container/toast-container.component';
@@ -19,6 +20,9 @@ import { ToastContainerComponent } from '../../../shared/components/toast-contai
           <span class="brand-name">Pulse<span class="text-gradient">Gym</span></span>
         </a>
         <div class="header-right">
+          <button type="button" class="theme-toggle-btn" (click)="themeService.toggleTheme()">
+            <span>{{ themeService.isDarkMode() ? '☀️ Light' : '🌙 Dark' }}</span>
+          </button>
           <span>Already registered?</span>
           <a routerLink="/auth/login" class="btn btn-secondary btn-sm">Sign In</a>
         </div>
@@ -558,6 +562,7 @@ import { ToastContainerComponent } from '../../../shared/components/toast-contai
 export class OnboardComponent {
   private readonly fb = inject(FormBuilder);
   private readonly authService = inject(AuthService);
+  readonly themeService = inject(ThemeService);
   private readonly router = inject(Router);
 
   readonly currentStep = signal<number>(1);
