@@ -13,12 +13,23 @@ export interface Toast {
 })
 export class NotificationService {
   readonly toasts = signal<Toast[]>([]);
+  private readonly maxToasts = 3;
 
   show(type: 'success' | 'error' | 'warning' | 'info', title: string, message?: string, duration = 4000): void {
+    const current = this.toasts();
+
+    // Deduplicate identical active toast
+    const existing = current.find(t => t.type === type && t.title === title && t.message === message);
+    if (existing) {
+      return;
+    }
+
     const id = Math.random().toString(36).substring(2, 9);
     const toast: Toast = { id, type, title, message, duration };
 
-    this.toasts.update(current => [...current, toast]);
+    // Keep at most maxToasts
+    const updated = current.length >= this.maxToasts ? [...current.slice(1), toast] : [...current, toast];
+    this.toasts.set(updated);
 
     if (duration > 0) {
       setTimeout(() => this.remove(id), duration);
@@ -26,19 +37,19 @@ export class NotificationService {
   }
 
   success(title: string, message?: string): void {
-    this.show('success', title, message);
+    this.show('success', title, message, 3500);
   }
 
   error(title: string, message?: string): void {
-    this.show('error', title, message, 5000);
+    this.show('error', title, message, 4000);
   }
 
   warning(title: string, message?: string): void {
-    this.show('warning', title, message);
+    this.show('warning', title, message, 3500);
   }
 
   info(title: string, message?: string): void {
-    this.show('info', title, message);
+    this.show('info', title, message, 3500);
   }
 
   remove(id: string): void {

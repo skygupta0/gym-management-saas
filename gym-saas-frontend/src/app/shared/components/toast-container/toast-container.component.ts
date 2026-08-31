@@ -14,27 +14,27 @@ import { NotificationService } from '../../../core/services/notification.service
           <div class="toast-icon-wrap">
             @switch (toast.type) {
               @case ('error') {
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                   <circle cx="12" cy="12" r="10"></circle>
                   <line x1="15" y1="9" x2="9" y2="15"></line>
                   <line x1="9" y1="9" x2="15" y2="15"></line>
                 </svg>
               }
               @case ('success') {
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                   <polyline points="22 4 12 14.01 9 11.01"></polyline>
                 </svg>
               }
               @case ('warning') {
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
                   <line x1="12" y1="9" x2="12" y2="13"></line>
                   <line x1="12" y1="17" x2="12.01" y2="17"></line>
                 </svg>
               }
               @case ('info') {
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                   <circle cx="12" cy="12" r="10"></circle>
                   <line x1="12" y1="16" x2="12" y2="12"></line>
                   <line x1="12" y1="8" x2="12.01" y2="8"></line>
@@ -53,7 +53,7 @@ import { NotificationService } from '../../../core/services/notification.service
 
           <!-- Close Button -->
           <button class="toast-close" (click)="notificationService.remove(toast.id)" aria-label="Dismiss notification">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <line x1="18" y1="6" x2="6" y2="18"></line>
               <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
@@ -65,13 +65,13 @@ import { NotificationService } from '../../../core/services/notification.service
   styles: [`
     .toast-stack {
       position: fixed;
-      top: 24px;
+      top: 76px;
       right: 24px;
       z-index: 999999;
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      max-width: 400px;
+      gap: 10px;
+      max-width: 360px;
       width: calc(100% - 48px);
       pointer-events: none;
     }
@@ -80,67 +80,40 @@ import { NotificationService } from '../../../core/services/notification.service
       pointer-events: auto;
       display: flex;
       align-items: flex-start;
-      gap: 14px;
-      padding: 16px 18px;
-      border-radius: var(--radius-lg);
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: var(--radius-md);
       position: relative;
       overflow: hidden;
-      animation: toastSlideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-      transition: all 0.25s ease;
-      border: 1px solid transparent;
+      animation: toastSlideIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      transition: all 0.2s ease;
+      opacity: 1;
     }
 
     @keyframes toastSlideIn {
       from {
         opacity: 0;
-        transform: translateX(40px) scale(0.95);
+        transform: translateY(-8px) scale(0.96);
       }
       to {
         opacity: 1;
-        transform: translateX(0) scale(1);
+        transform: translateY(0) scale(1);
       }
     }
 
-    /* Dark Mode Theme */
-    body.dark-theme .toast-item {
-      background: rgba(15, 23, 42, 0.95);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-color: rgba(255, 255, 255, 0.12);
-      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.6);
-    }
-
-    body.dark-theme .toast-title {
-      color: #ffffff;
-    }
-
-    body.dark-theme .toast-message {
-      color: #94a3b8;
-    }
-
-    body.dark-theme .toast-close {
-      color: #64748b;
-    }
-
-    body.dark-theme .toast-close:hover {
-      color: #ffffff;
-      background: rgba(255, 255, 255, 0.1);
-    }
-
-    /* Light Mode Theme */
+    /* Light Theme - 100% Solid Opaque Pure White */
     body.light-theme .toast-item {
-      background: #ffffff;
-      border-color: rgba(0, 0, 0, 0.08);
-      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.04);
+      background-color: #ffffff !important;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.12), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     }
 
     body.light-theme .toast-title {
-      color: #0f172a;
+      color: #0f172a !important;
     }
 
     body.light-theme .toast-message {
-      color: #475569;
+      color: #475569 !important;
     }
 
     body.light-theme .toast-close {
@@ -149,46 +122,70 @@ import { NotificationService } from '../../../core/services/notification.service
 
     body.light-theme .toast-close:hover {
       color: #0f172a;
-      background: #f1f5f9;
+      background-color: #f1f5f9;
     }
 
-    /* Status Colors */
+    /* Dark Theme - 100% Solid Opaque Slate/Navy */
+    body.dark-theme .toast-item {
+      background-color: #0f172a !important;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 16px 36px -4px rgba(0, 0, 0, 0.6);
+    }
+
+    body.dark-theme .toast-title {
+      color: #f8fafc !important;
+    }
+
+    body.dark-theme .toast-message {
+      color: #94a3b8 !important;
+    }
+
+    body.dark-theme .toast-close {
+      color: #64748b;
+    }
+
+    body.dark-theme .toast-close:hover {
+      color: #f8fafc;
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Status Color Variants */
     .toast-error {
-      border-left: 5px solid var(--color-danger) !important;
+      border-left: 4px solid var(--color-danger) !important;
     }
     .toast-error .toast-icon-wrap {
-      background: rgba(244, 63, 94, 0.12);
+      background: rgba(244, 63, 94, 0.14);
       color: var(--color-danger);
     }
 
     .toast-success {
-      border-left: 5px solid var(--color-success) !important;
+      border-left: 4px solid var(--color-success) !important;
     }
     .toast-success .toast-icon-wrap {
-      background: rgba(16, 185, 129, 0.12);
+      background: rgba(16, 185, 129, 0.14);
       color: var(--color-success);
     }
 
     .toast-warning {
-      border-left: 5px solid var(--color-warning) !important;
+      border-left: 4px solid var(--color-warning) !important;
     }
     .toast-warning .toast-icon-wrap {
-      background: rgba(245, 158, 11, 0.12);
+      background: rgba(245, 158, 11, 0.14);
       color: var(--color-warning);
     }
 
     .toast-info {
-      border-left: 5px solid var(--color-info) !important;
+      border-left: 4px solid var(--color-info) !important;
     }
     .toast-info .toast-icon-wrap {
-      background: rgba(56, 189, 248, 0.12);
+      background: rgba(56, 189, 248, 0.14);
       color: var(--color-info);
     }
 
     /* Icon Wrap */
     .toast-icon-wrap {
-      width: 36px;
-      height: 36px;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -202,31 +199,30 @@ import { NotificationService } from '../../../core/services/notification.service
       flex: 1;
       display: flex;
       flex-direction: column;
-      gap: 3px;
+      gap: 2px;
       min-width: 0;
     }
 
     .toast-title {
       font-family: var(--font-heading);
       font-weight: 700;
-      font-size: 0.95rem;
-      letter-spacing: -0.01em;
-      line-height: 1.25;
+      font-size: 0.9rem;
+      line-height: 1.3;
     }
 
     .toast-message {
-      font-size: 0.85rem;
-      line-height: 1.45;
+      font-size: 0.8rem;
+      line-height: 1.4;
       word-break: break-word;
     }
 
-    /* Close */
+    /* Close Button */
     .toast-close {
       background: transparent;
       border: none;
       border-radius: 50%;
-      width: 28px;
-      height: 28px;
+      width: 26px;
+      height: 26px;
       cursor: pointer;
       display: flex;
       align-items: center;
