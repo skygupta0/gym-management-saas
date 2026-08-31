@@ -286,10 +286,26 @@ button, input, select, textarea {
   color: var(--text-muted);
 }
 
+.form-control.is-invalid {
+  border-color: var(--color-danger) !important;
+  background: rgba(244, 63, 94, 0.05) !important;
+  box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.15) !important;
+}
+
 .form-error {
+  display: flex;
+  align-items: center;
+  gap: 4px;
   font-size: 0.8rem;
   color: var(--color-danger);
-  margin-top: 2px;
+  font-weight: 500;
+  margin-top: 4px;
+  animation: fadeIn 0.2s ease;
+}
+
+.form-error::before {
+  content: '⚠️';
+  font-size: 0.75rem;
 }
 
 /* Status Badges */

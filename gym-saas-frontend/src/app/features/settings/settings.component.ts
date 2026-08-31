@@ -5,6 +5,7 @@ import { GymService, TenantUpdateRequest } from '../../core/services/gym.service
 import { NotificationService } from '../../core/services/notification.service';
 import { Tenant } from '../../core/models/auth.models';
 import { AuthService } from '../../core/services/auth.service';
+import { FormErrorUtil } from '../../core/util/form-error.util';
 
 @Component({
   selector: 'app-settings',
@@ -26,13 +27,21 @@ import { AuthService } from '../../core/services/auth.service';
         <div class="settings-grid">
           <!-- Main Form Card -->
           <div class="settings-card glass-card">
-            <form [formGroup]="gymForm" (ngSubmit)="onSaveSettings()">
+            <form [formGroup]="gymForm" (ngSubmit)="onSaveSettings()" novalidate>
               <div class="section-title">Facility Information</div>
 
               <div class="form-row">
                 <div class="form-group flex-2">
                   <label class="form-label">Gym / Business Name *</label>
-                  <input type="text" class="form-control" formControlName="name" />
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="name"
+                    [class.is-invalid]="getFieldError('name')"
+                  />
+                  @if (getFieldError('name'); as err) {
+                    <span class="form-error">{{ err }}</span>
+                  }
                 </div>
                 <div class="form-group flex-1">
                   <label class="form-label">Tenant Slug (Immutable)</label>
@@ -47,7 +56,15 @@ import { AuthService } from '../../core/services/auth.service';
                 </div>
                 <div class="form-group flex-1">
                   <label class="form-label">Contact Phone</label>
-                  <input type="text" class="form-control" formControlName="phone" />
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="phone"
+                    [class.is-invalid]="getFieldError('phone')"
+                  />
+                  @if (getFieldError('phone'); as err) {
+                    <span class="form-error">{{ err }}</span>
+                  }
                 </div>
               </div>
 
@@ -97,7 +114,7 @@ import { AuthService } from '../../core/services/auth.service';
               </div>
 
               <div class="form-actions">
-                <button type="submit" class="btn btn-primary btn-lg" [disabled]="gymForm.invalid || isSaving()">
+                <button type="submit" class="btn btn-primary btn-lg" [disabled]="isSaving()">
                   @if (isSaving()) {
                     <span class="spinner"></span>
                     <span>Saving Changes...</span>
@@ -300,6 +317,14 @@ export class SettingsComponent implements OnInit {
     this.loadProfile();
   }
 
+  getFieldError(field: 'name' | 'phone'): string | null {
+    const labels: Record<string, string> = {
+      name: 'Gym facility name',
+      phone: 'Contact phone'
+    };
+    return FormErrorUtil.getErrorMessage(this.gymForm.get(field), labels[field]);
+  }
+
   loadProfile(): void {
     this.isLoading.set(true);
     this.gymService.getGymProfile().subscribe({
@@ -326,7 +351,10 @@ export class SettingsComponent implements OnInit {
   }
 
   onSaveSettings(): void {
-    if (this.gymForm.invalid) return;
+    if (this.gymForm.invalid) {
+      this.gymForm.markAllAsTouched();
+      return;
+    }
 
     this.isSaving.set(true);
     const formVal = this.gymForm.getRawValue();
@@ -351,8 +379,9 @@ export class SettingsComponent implements OnInit {
           this.notification.success('Settings Saved', 'Gym profile updated successfully.');
         }
       },
-      error: () => {
+      error: (err) => {
         this.isSaving.set(false);
+        FormErrorUtil.applyServerErrors(this.gymForm, err);
       }
     });
   }

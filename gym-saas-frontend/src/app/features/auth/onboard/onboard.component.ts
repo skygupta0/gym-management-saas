@@ -4,6 +4,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { BusinessType, TenantOnboardRequest } from '../../../core/models/auth.models';
+import { FormErrorUtil } from '../../../core/util/form-error.util';
 import { ToastContainerComponent } from '../../../shared/components/toast-container/toast-container.component';
 
 @Component({
@@ -53,9 +54,15 @@ import { ToastContainerComponent } from '../../../shared/components/toast-contai
 
               <div class="form-group">
                 <label class="form-label">Gym / Facility Name *</label>
-                <input type="text" class="form-control" placeholder="e.g. Iron Forge Fitness" formControlName="gymName" />
-                @if (gymForm.get('gymName')?.touched && gymForm.get('gymName')?.invalid) {
-                  <span class="form-error">Gym name is required</span>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="e.g. Iron Forge Fitness"
+                  formControlName="gymName"
+                  [class.is-invalid]="getGymError('gymName')"
+                />
+                @if (getGymError('gymName'); as err) {
+                  <span class="form-error">{{ err }}</span>
                 }
               </div>
 
@@ -78,11 +85,29 @@ import { ToastContainerComponent } from '../../../shared/components/toast-contai
               <div class="form-row">
                 <div class="form-group flex-1">
                   <label class="form-label">Official Email *</label>
-                  <input type="email" class="form-control" placeholder="contact@ironforge.com" formControlName="email" />
+                  <input
+                    type="email"
+                    class="form-control"
+                    placeholder="contact@ironforge.com"
+                    formControlName="email"
+                    [class.is-invalid]="getGymError('email')"
+                  />
+                  @if (getGymError('email'); as err) {
+                    <span class="form-error">{{ err }}</span>
+                  }
                 </div>
                 <div class="form-group flex-1">
                   <label class="form-label">Official Phone *</label>
-                  <input type="text" class="form-control" placeholder="9876543210" formControlName="phone" />
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="9876543210"
+                    formControlName="phone"
+                    [class.is-invalid]="getGymError('phone')"
+                  />
+                  @if (getGymError('phone'); as err) {
+                    <span class="form-error">{{ err }}</span>
+                  }
                 </div>
               </div>
 
@@ -99,7 +124,7 @@ import { ToastContainerComponent } from '../../../shared/components/toast-contai
 
               <div class="wizard-actions">
                 <div></div>
-                <button type="button" class="btn btn-primary btn-lg" [disabled]="gymForm.invalid" (click)="goToStep(2)">
+                <button type="button" class="btn btn-primary btn-lg" (click)="proceedStep1()">
                   Continue to Owner Profile →
                 </button>
               </div>
@@ -117,7 +142,16 @@ import { ToastContainerComponent } from '../../../shared/components/toast-contai
               <div class="form-row">
                 <div class="form-group flex-1">
                   <label class="form-label">First Name *</label>
-                  <input type="text" class="form-control" placeholder="John" formControlName="ownerFirstName" />
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="John"
+                    formControlName="ownerFirstName"
+                    [class.is-invalid]="getOwnerError('ownerFirstName')"
+                  />
+                  @if (getOwnerError('ownerFirstName'); as err) {
+                    <span class="form-error">{{ err }}</span>
+                  }
                 </div>
                 <div class="form-group flex-1">
                   <label class="form-label">Last Name</label>
@@ -127,12 +161,30 @@ import { ToastContainerComponent } from '../../../shared/components/toast-contai
 
               <div class="form-group">
                 <label class="form-label">Owner Login Email *</label>
-                <input type="email" class="form-control" placeholder="owner@domain.com" formControlName="ownerEmail" />
+                <input
+                  type="email"
+                  class="form-control"
+                  placeholder="owner@domain.com"
+                  formControlName="ownerEmail"
+                  [class.is-invalid]="getOwnerError('ownerEmail')"
+                />
+                @if (getOwnerError('ownerEmail'); as err) {
+                  <span class="form-error">{{ err }}</span>
+                }
               </div>
 
               <div class="form-group">
                 <label class="form-label">Password * (min 6 characters)</label>
-                <input type="password" class="form-control" placeholder="••••••••" formControlName="ownerPassword" />
+                <input
+                  type="password"
+                  class="form-control"
+                  placeholder="••••••••"
+                  formControlName="ownerPassword"
+                  [class.is-invalid]="getOwnerError('ownerPassword')"
+                />
+                @if (getOwnerError('ownerPassword'); as err) {
+                  <span class="form-error">{{ err }}</span>
+                }
               </div>
 
               <div class="form-group">
@@ -144,7 +196,7 @@ import { ToastContainerComponent } from '../../../shared/components/toast-contai
                 <button type="button" class="btn btn-secondary" (click)="goToStep(1)">
                   ← Back
                 </button>
-                <button type="button" class="btn btn-primary btn-lg" [disabled]="ownerForm.invalid" (click)="goToStep(3)">
+                <button type="button" class="btn btn-primary btn-lg" (click)="proceedStep2()">
                   Review & Launch →
                 </button>
               </div>
@@ -525,7 +577,7 @@ export class OnboardComponent {
     gymName: ['', [Validators.required]],
     businessType: ['TRADITIONAL_GYM' as BusinessType, [Validators.required]],
     email: ['', [Validators.required, Validators.email]],
-    phone: ['', [Validators.required]],
+    phone: ['', [Validators.required, Validators.pattern(/^[0-9+ -]{7,15}$/)]],
     address: [''],
     city: ['']
   });
@@ -537,6 +589,40 @@ export class OnboardComponent {
     ownerPassword: ['', [Validators.required, Validators.minLength(6)]],
     ownerPhone: ['']
   });
+
+  getGymError(field: 'gymName' | 'email' | 'phone'): string | null {
+    const labels: Record<string, string> = {
+      gymName: 'Gym facility name',
+      email: 'Official email',
+      phone: 'Contact phone'
+    };
+    return FormErrorUtil.getErrorMessage(this.gymForm.get(field), labels[field]);
+  }
+
+  getOwnerError(field: 'ownerFirstName' | 'ownerEmail' | 'ownerPassword'): string | null {
+    const labels: Record<string, string> = {
+      ownerFirstName: 'First name',
+      ownerEmail: 'Owner email',
+      ownerPassword: 'Password'
+    };
+    return FormErrorUtil.getErrorMessage(this.ownerForm.get(field), labels[field]);
+  }
+
+  proceedStep1(): void {
+    if (this.gymForm.invalid) {
+      this.gymForm.markAllAsTouched();
+      return;
+    }
+    this.goToStep(2);
+  }
+
+  proceedStep2(): void {
+    if (this.ownerForm.invalid) {
+      this.ownerForm.markAllAsTouched();
+      return;
+    }
+    this.goToStep(3);
+  }
 
   goToStep(step: number): void {
     this.currentStep.set(step);
@@ -570,8 +656,12 @@ export class OnboardComponent {
           this.router.navigate(['/dashboard']);
         }
       },
-      error: () => {
+      error: (err) => {
         this.isLoading.set(false);
+        const mappedGym = FormErrorUtil.applyServerErrors(this.gymForm, err);
+        const mappedOwner = FormErrorUtil.applyServerErrors(this.ownerForm, err);
+        if (mappedGym) this.goToStep(1);
+        else if (mappedOwner) this.goToStep(2);
       }
     });
   }

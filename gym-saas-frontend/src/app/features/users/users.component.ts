@@ -4,6 +4,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../../core/services/user.service';
 import { NotificationService } from '../../core/services/notification.service';
 import { Role, User, UserCreateRequest } from '../../core/models/auth.models';
+import { FormErrorUtil } from '../../core/util/form-error.util';
 import { ModalComponent } from '../../shared/components/modal/modal.component';
 
 @Component({
@@ -144,11 +145,20 @@ import { ModalComponent } from '../../shared/components/modal/modal.component';
 
       <!-- Add Employee Modal -->
       <app-modal [isOpen]="isModalOpen()" title="Add New Employee / Trainer" (close)="closeModal()">
-        <form [formGroup]="userForm" (ngSubmit)="onSubmitUser()" class="user-form">
+        <form [formGroup]="userForm" (ngSubmit)="onSubmitUser()" class="user-form" novalidate>
           <div class="form-row">
             <div class="form-group flex-1">
               <label class="form-label">First Name *</label>
-              <input type="text" class="form-control" placeholder="Vikram" formControlName="firstName" />
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Vikram"
+                formControlName="firstName"
+                [class.is-invalid]="getFieldError('firstName')"
+              />
+              @if (getFieldError('firstName'); as err) {
+                <span class="form-error">{{ err }}</span>
+              }
             </div>
             <div class="form-group flex-1">
               <label class="form-label">Last Name</label>
@@ -158,18 +168,45 @@ import { ModalComponent } from '../../shared/components/modal/modal.component';
 
           <div class="form-group">
             <label class="form-label">Email Address *</label>
-            <input type="email" class="form-control" placeholder="vikram@gym.com" formControlName="email" />
+            <input
+              type="email"
+              class="form-control"
+              placeholder="vikram@gym.com"
+              formControlName="email"
+              [class.is-invalid]="getFieldError('email')"
+            />
+            @if (getFieldError('email'); as err) {
+              <span class="form-error">{{ err }}</span>
+            }
           </div>
 
           <div class="form-group">
-            <label class="form-label">Temporary Password *</label>
-            <input type="password" class="form-control" placeholder="••••••••" formControlName="password" />
+            <label class="form-label">Temporary Password * (min 6 characters)</label>
+            <input
+              type="password"
+              class="form-control"
+              placeholder="••••••••"
+              formControlName="password"
+              [class.is-invalid]="getFieldError('password')"
+            />
+            @if (getFieldError('password'); as err) {
+              <span class="form-error">{{ err }}</span>
+            }
           </div>
 
           <div class="form-row">
             <div class="form-group flex-1">
               <label class="form-label">Mobile Phone</label>
-              <input type="text" class="form-control" placeholder="9876543210" formControlName="phone" />
+              <input
+                type="text"
+                class="form-control"
+                placeholder="9876543210"
+                formControlName="phone"
+                [class.is-invalid]="getFieldError('phone')"
+              />
+              @if (getFieldError('phone'); as err) {
+                <span class="form-error">{{ err }}</span>
+              }
             </div>
             <div class="form-group flex-1">
               <label class="form-label">Assigned Role *</label>
@@ -183,7 +220,7 @@ import { ModalComponent } from '../../shared/components/modal/modal.component';
 
           <div class="modal-footer flex-between">
             <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
-            <button type="submit" class="btn btn-primary" [disabled]="userForm.invalid || isSubmitting()">
+            <button type="submit" class="btn btn-primary" [disabled]="isSubmitting()">
               @if (isSubmitting()) {
                 <span class="spinner"></span>
                 <span>Saving...</span>
@@ -403,6 +440,16 @@ export class UsersComponent implements OnInit {
     this.loadUsers();
   }
 
+  getFieldError(field: 'firstName' | 'email' | 'password' | 'phone'): string | null {
+    const labels: Record<string, string> = {
+      firstName: 'First name',
+      email: 'Email address',
+      password: 'Password',
+      phone: 'Phone number'
+    };
+    return FormErrorUtil.getErrorMessage(this.userForm.get(field), labels[field]);
+  }
+
   loadUsers(): void {
     this.isLoading.set(true);
     this.userService.getUsers(0, 50).subscribe({
@@ -449,7 +496,10 @@ export class UsersComponent implements OnInit {
   }
 
   onSubmitUser(): void {
-    if (this.userForm.invalid) return;
+    if (this.userForm.invalid) {
+      this.userForm.markAllAsTouched();
+      return;
+    }
 
     this.isSubmitting.set(true);
     const formVal = this.userForm.getRawValue();
@@ -472,8 +522,9 @@ export class UsersComponent implements OnInit {
           this.loadUsers();
         }
       },
-      error: () => {
+      error: (err) => {
         this.isSubmitting.set(false);
+        FormErrorUtil.applyServerErrors(this.userForm, err);
       }
     });
   }

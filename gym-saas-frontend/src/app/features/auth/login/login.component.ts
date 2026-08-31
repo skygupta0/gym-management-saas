@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
+import { FormErrorUtil } from '../../../core/util/form-error.util';
 import { ToastContainerComponent } from '../../../shared/components/toast-container/toast-container.component';
 
 @Component({
@@ -79,7 +80,7 @@ import { ToastContainerComponent } from '../../../shared/components/toast-contai
             </div>
           </div>
 
-          <form [formGroup]="form" (ngSubmit)="onSubmit()" class="login-form">
+          <form [formGroup]="form" (ngSubmit)="onSubmit()" class="login-form" novalidate>
             <div class="form-group">
               <label class="form-label" for="email">Email Address</label>
               <input
@@ -88,10 +89,10 @@ import { ToastContainerComponent } from '../../../shared/components/toast-contai
                 class="form-control"
                 placeholder="owner@yourgym.com"
                 formControlName="email"
-                [class.is-invalid]="form.get('email')?.touched && form.get('email')?.invalid"
+                [class.is-invalid]="getFieldError('email')"
               />
-              @if (form.get('email')?.touched && form.get('email')?.invalid) {
-                <span class="form-error">Please enter a valid email address</span>
+              @if (getFieldError('email'); as err) {
+                <span class="form-error">{{ err }}</span>
               }
             </div>
 
@@ -106,18 +107,18 @@ import { ToastContainerComponent } from '../../../shared/components/toast-contai
                   class="form-control"
                   placeholder="••••••••"
                   formControlName="password"
-                  [class.is-invalid]="form.get('password')?.touched && form.get('password')?.invalid"
+                  [class.is-invalid]="getFieldError('password')"
                 />
                 <button type="button" class="pwd-toggle-btn" (click)="togglePasswordVisibility()" aria-label="Toggle Password Visibility">
                   {{ showPassword() ? '👁️' : '🔒' }}
                 </button>
               </div>
-              @if (form.get('password')?.touched && form.get('password')?.invalid) {
-                <span class="form-error">Password is required (min 6 characters)</span>
+              @if (getFieldError('password'); as err) {
+                <span class="form-error">{{ err }}</span>
               }
             </div>
 
-            <button type="submit" class="btn btn-primary btn-lg submit-btn" [disabled]="form.invalid || isLoading()">
+            <button type="submit" class="btn btn-primary btn-lg submit-btn" [disabled]="isLoading()">
               @if (isLoading()) {
                 <span class="spinner"></span>
                 <span>Signing In...</span>
@@ -380,8 +381,14 @@ export class LoginComponent {
     password: ['', [Validators.required, Validators.minLength(6)]]
   });
 
+  getFieldError(fieldName: 'email' | 'password'): string | null {
+    const label = fieldName === 'email' ? 'Email address' : 'Password';
+    return FormErrorUtil.getErrorMessage(this.form.get(fieldName), label);
+  }
+
   fillDemo(email: string, pass: string): void {
     this.form.patchValue({ email, password: pass });
+    this.form.markAsUntouched();
   }
 
   togglePasswordVisibility(): void {
@@ -389,7 +396,10 @@ export class LoginComponent {
   }
 
   onSubmit(): void {
-    if (this.form.invalid) return;
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
 
     this.isLoading.set(true);
     const { email, password } = this.form.getRawValue();
@@ -401,8 +411,9 @@ export class LoginComponent {
           this.router.navigate(['/dashboard']);
         }
       },
-      error: () => {
+      error: (err) => {
         this.isLoading.set(false);
+        FormErrorUtil.applyServerErrors(this.form, err);
       }
     });
   }
