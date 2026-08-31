@@ -13,7 +13,7 @@ fi
 
 # Set dev environment variables
 export SPRING_PROFILES_ACTIVE="dev"
-export DB_URL="${DB_URL:-jdbc:postgresql://localhost:5433/gymsaas}"
+export DB_URL="${DB_URL:-jdbc:postgresql://localhost:5432/gymsaas}"
 export DB_USERNAME="${DB_USERNAME:-postgres}"
 export DB_PASSWORD="${DB_PASSWORD:-postgres}"
 export PORT="${PORT:-8080}"
