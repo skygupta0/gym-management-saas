@@ -1,0 +1,20 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Run GymSaasApplication (Dev)",
+      "request": "launch",
+      "mainClass": "com.gymsaas.GymSaasApplication",
+      "projectName": "gym-saas-backend",
+      "cwd": "${workspaceFolder}/gym-saas-backend",
+      "env": {
+        "SPRING_PROFILES_ACTIVE": "dev",
+        "DB_URL": "jdbc:postgresql://localhost:5433/gymsaas",
+        "DB_USERNAME": "gymsaas",
+        "DB_PASSWORD": "",
+        "PORT": "8080"
+      }
+    }
+  ]
+}
