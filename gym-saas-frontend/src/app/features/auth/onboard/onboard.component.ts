@@ -676,8 +676,21 @@ export class OnboardComponent {
         this.isLoading.set(false);
         const mappedGym = FormErrorUtil.applyServerErrors(this.gymForm, err);
         const mappedOwner = FormErrorUtil.applyServerErrors(this.ownerForm, err);
-        if (mappedGym) this.goToStep(1);
-        else if (mappedOwner) this.goToStep(2);
+
+        const errMsg = err?.error?.error?.message || '';
+        if (errMsg.toLowerCase().includes('owner email')) {
+          this.ownerForm.get('ownerEmail')?.setErrors({ serverError: 'This email is already registered. Please use another email or sign in.' });
+          this.ownerForm.get('ownerEmail')?.markAsTouched();
+          this.goToStep(2);
+        } else if (errMsg.toLowerCase().includes('gym') || errMsg.toLowerCase().includes('slug')) {
+          this.gymForm.get('gymName')?.setErrors({ serverError: errMsg });
+          this.gymForm.get('gymName')?.markAsTouched();
+          this.goToStep(1);
+        } else if (mappedGym) {
+          this.goToStep(1);
+        } else if (mappedOwner) {
+          this.goToStep(2);
+        }
       }
     });
   }
