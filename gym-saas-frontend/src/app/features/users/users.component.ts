@@ -243,7 +243,7 @@ import { ModalComponent } from '../../shared/components/modal/modal.component';
     .page-title {
       font-size: 2rem;
       font-weight: 800;
-      color: #ffffff;
+      color: var(--text-primary);
       margin-bottom: 4px;
     }
 
@@ -269,7 +269,7 @@ import { ModalComponent } from '../../shared/components/modal/modal.component';
 
     .pill-btn {
       padding: 6px 14px;
-      background: rgba(255, 255, 255, 0.04);
+      background: var(--bg-input);
       border: 1px solid var(--border-subtle);
       border-radius: 999px;
       color: var(--text-secondary);
@@ -280,15 +280,16 @@ import { ModalComponent } from '../../shared/components/modal/modal.component';
     }
 
     .pill-btn:hover {
-      background: rgba(255, 255, 255, 0.08);
-      color: #ffffff;
+      background: var(--bg-card-hover);
+      color: var(--text-primary);
+      border-color: var(--border-hover);
     }
 
     .pill-active {
-      background: var(--primary-cyan);
-      color: #04101e;
-      border-color: transparent;
-      box-shadow: 0 0 12px rgba(0, 242, 254, 0.3);
+      background: var(--primary-cyan) !important;
+      color: #04101e !important;
+      border-color: transparent !important;
+      box-shadow: 0 0 12px rgba(0, 242, 254, 0.3) !important;
     }
 
     .search-input {
@@ -317,7 +318,7 @@ import { ModalComponent } from '../../shared/components/modal/modal.component';
 
     .empty-state h3 {
       font-size: 1.25rem;
-      color: #ffffff;
+      color: var(--text-primary);
     }
 
     .empty-state p {
@@ -354,7 +355,7 @@ import { ModalComponent } from '../../shared/components/modal/modal.component';
 
     .user-fullname {
       font-weight: 600;
-      color: #ffffff;
+      color: var(--text-primary);
     }
 
     .user-email-cell {

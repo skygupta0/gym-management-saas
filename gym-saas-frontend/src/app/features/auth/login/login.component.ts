@@ -269,7 +269,7 @@ import { ToastContainerComponent } from '../../../shared/components/toast-contai
 
     .feature-text strong {
       font-size: 0.95rem;
-      color: #ffffff;
+      color: var(--text-primary);
     }
 
     .feature-text span {
@@ -296,6 +296,11 @@ import { ToastContainerComponent } from '../../../shared/components/toast-contai
       width: 100%;
       max-width: 440px;
       padding: 40px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-lg);
+      backdrop-filter: var(--glass-blur);
     }
 
     .login-header {
@@ -305,7 +310,7 @@ import { ToastContainerComponent } from '../../../shared/components/toast-contai
     .login-title {
       font-size: 1.85rem;
       font-weight: 800;
-      color: #ffffff;
+      color: var(--text-primary);
       margin-bottom: 6px;
     }
 

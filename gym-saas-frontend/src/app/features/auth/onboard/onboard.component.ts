@@ -280,6 +280,7 @@ import { ToastContainerComponent } from '../../../shared/components/toast-contai
       background: var(--bg-app);
       display: flex;
       flex-direction: column;
+      transition: background-color var(--transition-normal);
     }
 
     .onboard-header {
@@ -289,14 +290,15 @@ import { ToastContainerComponent } from '../../../shared/components/toast-contai
       align-items: center;
       justify-content: space-between;
       border-bottom: 1px solid var(--border-subtle);
-      background: rgba(13, 18, 29, 0.6);
-      backdrop-filter: blur(16px);
+      background: var(--bg-card);
+      backdrop-filter: var(--glass-blur);
     }
 
     .brand-link {
       display: flex;
       align-items: center;
       gap: 10px;
+      text-decoration: none;
     }
 
     .brand-icon {
@@ -316,13 +318,13 @@ import { ToastContainerComponent } from '../../../shared/components/toast-contai
       font-family: var(--font-heading);
       font-size: 1.25rem;
       font-weight: 800;
-      color: #ffffff;
+      color: var(--text-primary);
     }
 
     .header-right {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 16px;
       font-size: 0.85rem;
       color: var(--text-secondary);
     }
@@ -350,24 +352,25 @@ import { ToastContainerComponent } from '../../../shared/components/toast-contai
       display: flex;
       align-items: center;
       gap: 10px;
-      opacity: 0.45;
+      opacity: 0.55;
       transition: opacity var(--transition-normal);
     }
 
     .step-active { opacity: 1; }
 
     .node-circle {
-      width: 32px;
-      height: 32px;
+      width: 34px;
+      height: 34px;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.08);
+      background: var(--bg-card);
       border: 1px solid var(--border-subtle);
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 700;
       font-size: 0.85rem;
-      color: #ffffff;
+      color: var(--text-primary);
+      box-shadow: var(--shadow-sm);
     }
 
     .step-active .node-circle {
@@ -378,9 +381,9 @@ import { ToastContainerComponent } from '../../../shared/components/toast-contai
     }
 
     .node-label {
-      font-size: 0.85rem;
+      font-size: 0.875rem;
       font-weight: 600;
-      color: #ffffff;
+      color: var(--text-primary);
     }
 
     .step-line {
@@ -396,7 +399,11 @@ import { ToastContainerComponent } from '../../../shared/components/toast-contai
     /* Wizard Card */
     .wizard-card {
       padding: 36px 40px;
-      background: rgba(16, 22, 36, 0.8);
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-md);
+      backdrop-filter: var(--glass-blur);
     }
 
     .step-heading {
@@ -406,7 +413,7 @@ import { ToastContainerComponent } from '../../../shared/components/toast-contai
     .step-heading h2 {
       font-size: 1.65rem;
       font-weight: 800;
-      color: #ffffff;
+      color: var(--text-primary);
       margin-bottom: 6px;
     }
 
@@ -432,14 +439,14 @@ import { ToastContainerComponent } from '../../../shared/components/toast-contai
     }
 
     .category-card {
-      padding: 12px;
+      padding: 14px 12px;
       border-radius: var(--radius-md);
-      background: rgba(255, 255, 255, 0.03);
+      background: var(--bg-input);
       border: 1px solid var(--border-subtle);
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       cursor: pointer;
       transition: all var(--transition-fast);
       text-align: center;
@@ -447,17 +454,17 @@ import { ToastContainerComponent } from '../../../shared/components/toast-contai
 
     .category-card:hover {
       border-color: var(--border-hover);
-      background: rgba(255, 255, 255, 0.06);
+      transform: translateY(-2px);
     }
 
     .category-selected {
-      border-color: var(--primary-cyan);
-      background: rgba(0, 242, 254, 0.08);
+      border-color: var(--primary-cyan) !important;
+      background: rgba(0, 242, 254, 0.08) !important;
       box-shadow: 0 0 14px rgba(0, 242, 254, 0.2);
     }
 
-    .cat-icon { font-size: 1.3rem; }
-    .cat-title { font-size: 0.75rem; font-weight: 600; color: #ffffff; }
+    .cat-icon { font-size: 1.4rem; }
+    .cat-title { font-size: 0.8rem; font-weight: 600; color: var(--text-primary); }
 
     /* Plans Grid */
     .plans-grid {
@@ -469,7 +476,7 @@ import { ToastContainerComponent } from '../../../shared/components/toast-contai
 
     .plan-card {
       padding: 24px;
-      background: rgba(255, 255, 255, 0.03);
+      background: var(--bg-input);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-lg);
       position: relative;
@@ -477,9 +484,13 @@ import { ToastContainerComponent } from '../../../shared/components/toast-contai
       transition: all var(--transition-normal);
     }
 
+    .plan-card:hover {
+      border-color: var(--border-hover);
+    }
+
     .plan-selected {
-      border-color: var(--primary-cyan);
-      background: rgba(0, 242, 254, 0.06);
+      border-color: var(--primary-cyan) !important;
+      background: rgba(0, 242, 254, 0.06) !important;
       box-shadow: 0 0 24px rgba(0, 242, 254, 0.25);
     }
 
@@ -487,7 +498,7 @@ import { ToastContainerComponent } from '../../../shared/components/toast-contai
       position: absolute;
       top: -10px;
       right: 18px;
-      padding: 2px 8px;
+      padding: 3px 10px;
       background: var(--accent-gradient);
       color: #04101e;
       font-size: 0.65rem;
@@ -498,7 +509,7 @@ import { ToastContainerComponent } from '../../../shared/components/toast-contai
     .plan-name {
       font-size: 1.15rem;
       font-weight: 700;
-      color: #ffffff;
+      color: var(--text-primary);
       margin-bottom: 4px;
     }
 
@@ -525,7 +536,7 @@ import { ToastContainerComponent } from '../../../shared/components/toast-contai
     }
 
     .summary-box {
-      background: rgba(255, 255, 255, 0.03);
+      background: var(--bg-input);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-md);
       padding: 16px 20px;
@@ -542,7 +553,7 @@ import { ToastContainerComponent } from '../../../shared/components/toast-contai
     }
 
     .sum-label { color: var(--text-muted); }
-    .sum-val { color: #ffffff; font-weight: 600; }
+    .sum-val { color: var(--text-primary); font-weight: 600; }
 
     .wizard-actions {
       margin-top: 32px;

@@ -47,11 +47,12 @@ import { CommonModule } from '@angular/common';
       max-width: 540px;
       max-height: 90vh;
       overflow-y: auto;
-      background: #0f1626;
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
       border-radius: var(--radius-xl);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+      box-shadow: var(--shadow-lg);
       padding: 24px 28px;
+      backdrop-filter: var(--glass-blur);
     }
 
     .modal-header {
@@ -63,11 +64,11 @@ import { CommonModule } from '@angular/common';
     .modal-title {
       font-size: 1.25rem;
       font-weight: 700;
-      color: #ffffff;
+      color: var(--text-primary);
     }
 
     .modal-close-btn {
-      background: rgba(255, 255, 255, 0.05);
+      background: var(--bg-input);
       border: 1px solid var(--border-subtle);
       border-radius: 50%;
       width: 32px;
@@ -81,8 +82,8 @@ import { CommonModule } from '@angular/common';
     }
 
     .modal-close-btn:hover {
-      background: rgba(255, 255, 255, 0.15);
-      color: #ffffff;
+      background: var(--bg-card-hover);
+      color: var(--text-primary);
     }
 
     .modal-body {

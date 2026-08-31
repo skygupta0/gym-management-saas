@@ -179,7 +179,7 @@ interface ActivityItem {
     .page-title {
       font-size: 2.2rem;
       font-weight: 800;
-      color: #ffffff;
+      color: var(--text-primary);
       margin-bottom: 4px;
     }
 
@@ -189,7 +189,7 @@ interface ActivityItem {
     }
 
     .page-subtitle strong {
-      color: #ffffff;
+      color: var(--text-primary);
     }
 
     .header-actions {
@@ -256,7 +256,7 @@ interface ActivityItem {
     .section-header h3 {
       font-size: 1.15rem;
       font-weight: 700;
-      color: #ffffff;
+      color: var(--text-primary);
     }
 
     .section-tag {
@@ -276,7 +276,7 @@ interface ActivityItem {
 
     .action-tile {
       padding: 16px;
-      background: rgba(255, 255, 255, 0.03);
+      background: var(--bg-input);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-md);
       display: flex;
@@ -288,7 +288,7 @@ interface ActivityItem {
     }
 
     .action-tile:hover {
-      background: rgba(255, 255, 255, 0.07);
+      background: var(--bg-card-hover);
       border-color: var(--border-hover);
       transform: translateY(-2px);
     }
@@ -313,7 +313,7 @@ interface ActivityItem {
       font-family: var(--font-heading);
       font-size: 0.95rem;
       font-weight: 700;
-      color: #ffffff;
+      color: var(--text-primary);
     }
 
     .tile-desc {
@@ -324,7 +324,7 @@ interface ActivityItem {
     /* Capacity Progress */
     .capacity-box {
       padding: 16px;
-      background: rgba(255, 255, 255, 0.02);
+      background: var(--bg-input);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-md);
       display: flex;
@@ -344,7 +344,7 @@ interface ActivityItem {
     .progress-track {
       width: 100%;
       height: 8px;
-      background: rgba(255, 255, 255, 0.08);
+      background: var(--border-subtle);
       border-radius: 999px;
       overflow: hidden;
     }
@@ -368,14 +368,15 @@ interface ActivityItem {
       align-items: center;
       gap: 12px;
       padding: 10px 12px;
-      background: rgba(255, 255, 255, 0.02);
+      background: var(--bg-input);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-md);
-      transition: background var(--transition-fast);
+      transition: all var(--transition-fast);
     }
 
     .activity-row:hover {
-      background: rgba(255, 255, 255, 0.05);
+      border-color: var(--border-hover);
+      transform: translateX(2px);
     }
 
     .activity-badge-icon {
@@ -403,7 +404,7 @@ interface ActivityItem {
     .activity-title-text {
       font-size: 0.85rem;
       font-weight: 600;
-      color: #ffffff;
+      color: var(--text-primary);
     }
 
     .activity-sub {

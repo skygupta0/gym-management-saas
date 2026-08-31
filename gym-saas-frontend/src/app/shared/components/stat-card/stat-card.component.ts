@@ -57,7 +57,7 @@ import { CommonModule } from '@angular/common';
       display: flex;
       align-items: center;
       justify-content: center;
-      background: rgba(255, 255, 255, 0.04);
+      background: var(--bg-input);
       border: 1px solid var(--border-subtle);
       font-size: 1.25rem;
     }
@@ -73,7 +73,7 @@ import { CommonModule } from '@angular/common';
       font-size: 2.1rem;
       font-weight: 800;
       letter-spacing: -0.02em;
-      color: #ffffff;
+      color: var(--text-primary);
       line-height: 1.1;
     }
 

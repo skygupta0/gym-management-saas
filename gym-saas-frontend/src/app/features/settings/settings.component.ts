@@ -169,7 +169,7 @@ import { FormErrorUtil } from '../../core/util/form-error.util';
     .page-title {
       font-size: 2rem;
       font-weight: 800;
-      color: #ffffff;
+      color: var(--text-primary);
       margin-bottom: 4px;
     }
 
@@ -193,13 +193,17 @@ import { FormErrorUtil } from '../../core/util/form-error.util';
 
     .settings-card {
       padding: 28px 32px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-md);
     }
 
     .section-title {
       font-family: var(--font-heading);
       font-size: 1.05rem;
       font-weight: 700;
-      color: #ffffff;
+      color: var(--text-primary);
       margin-bottom: 14px;
       padding-bottom: 8px;
       border-bottom: 1px solid var(--border-subtle);
@@ -214,9 +218,10 @@ import { FormErrorUtil } from '../../core/util/form-error.util';
     .flex-2 { flex: 2; }
 
     .disabled-input {
-      opacity: 0.6;
+      opacity: 0.7;
       cursor: not-allowed;
-      background: rgba(0, 0, 0, 0.2);
+      background: var(--bg-input) !important;
+      color: var(--text-muted) !important;
     }
 
     .form-actions {
@@ -231,6 +236,10 @@ import { FormErrorUtil } from '../../core/util/form-error.util';
       display: flex;
       flex-direction: column;
       gap: 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-md);
     }
 
     .sub-header {
@@ -242,7 +251,7 @@ import { FormErrorUtil } from '../../core/util/form-error.util';
     .sub-header h3 {
       font-size: 1.15rem;
       font-weight: 700;
-      color: #ffffff;
+      color: var(--text-primary);
     }
 
     .sub-tier-name {
@@ -254,7 +263,7 @@ import { FormErrorUtil } from '../../core/util/form-error.util';
     .sub-price {
       font-size: 1.8rem;
       font-weight: 900;
-      color: #ffffff;
+      color: var(--text-primary);
     }
 
     .sub-price span {
@@ -279,7 +288,7 @@ import { FormErrorUtil } from '../../core/util/form-error.util';
     }
 
     .spec-label { color: var(--text-muted); }
-    .spec-val { color: #ffffff; font-weight: 600; }
+    .spec-val { color: var(--text-primary); font-weight: 600; }
 
     .sub-footer {
       font-size: 0.775rem;

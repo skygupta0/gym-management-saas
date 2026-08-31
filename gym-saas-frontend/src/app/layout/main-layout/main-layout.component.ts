@@ -175,7 +175,7 @@ import { ThemeService } from '../../core/services/theme.service';
       font-family: var(--font-heading);
       font-weight: 800;
       font-size: 1.15rem;
-      color: #ffffff;
+      color: var(--text-primary);
       line-height: 1.1;
     }
 
@@ -200,15 +200,15 @@ import { ThemeService } from '../../core/services/theme.service';
     }
 
     .collapse-toggle:hover {
-      color: #ffffff;
-      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-primary);
+      background: var(--bg-card-hover);
     }
 
     /* Gym Context Card */
     .gym-badge-card {
       margin: 16px 16px 8px 16px;
       padding: 12px 14px;
-      background: rgba(255, 255, 255, 0.03);
+      background: var(--bg-input);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-md);
       display: flex;
@@ -228,7 +228,7 @@ import { ThemeService } from '../../core/services/theme.service';
     .gym-name {
       font-size: 0.85rem;
       font-weight: 600;
-      color: #ffffff;
+      color: var(--text-primary);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -271,8 +271,8 @@ import { ThemeService } from '../../core/services/theme.service';
     }
 
     .nav-link:hover {
-      color: #ffffff;
-      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-primary);
+      background: var(--bg-card-hover);
     }
 
     .nav-link.active {
@@ -327,7 +327,7 @@ import { ThemeService } from '../../core/services/theme.service';
     .user-name {
       font-size: 0.825rem;
       font-weight: 600;
-      color: #ffffff;
+      color: var(--text-primary);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -342,7 +342,7 @@ import { ThemeService } from '../../core/services/theme.service';
     }
 
     .logout-btn {
-      background: rgba(255, 255, 255, 0.05);
+      background: var(--bg-input);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-sm);
       color: var(--text-muted);
@@ -374,9 +374,9 @@ import { ThemeService } from '../../core/services/theme.service';
     /* Topbar */
     .layout-topbar {
       height: var(--topbar-height);
-      background: rgba(8, 11, 17, 0.8);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      background: var(--bg-card);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
       border-bottom: 1px solid var(--border-subtle);
       padding: 0 32px;
       display: flex;
@@ -394,17 +394,17 @@ import { ThemeService } from '../../core/services/theme.service';
     }
 
     .tenant-status-pill {
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 3px 9px;
-      background: rgba(16, 185, 129, 0.12);
-      border: 1px solid rgba(16, 185, 129, 0.25);
+      padding: 4px 10px;
+      background: var(--color-success-bg);
+      border: 1px solid rgba(16, 185, 129, 0.3);
       border-radius: 999px;
-      font-size: 0.675rem;
+      font-size: 0.7rem;
       font-weight: 700;
       color: var(--color-success);
-      letter-spacing: 0.05em;
+      letter-spacing: 0.04em;
     }
 
     .status-dot {
@@ -416,10 +416,9 @@ import { ThemeService } from '../../core/services/theme.service';
     }
 
     .topbar-gym-name {
-      font-family: var(--font-heading);
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: #ffffff;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-primary);
     }
 
     .topbar-right {
@@ -451,12 +450,18 @@ import { ThemeService } from '../../core/services/theme.service';
     .user-badge {
       display: flex;
       align-items: center;
-      gap: 8px;
-      padding: 4px 10px 4px 4px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--border-subtle);
+      gap: 10px;
+      padding: 6px 12px 6px 6px;
       border-radius: 999px;
+      background: var(--bg-input);
+      border: 1px solid var(--border-subtle);
       cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .user-badge:hover {
+      border-color: var(--border-hover);
+      background: var(--bg-card-hover);
     }
 
     .user-avatar-small {
@@ -468,7 +473,7 @@ import { ThemeService } from '../../core/services/theme.service';
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 700;
+      font-weight: 800;
       font-size: 0.75rem;
     }
 
