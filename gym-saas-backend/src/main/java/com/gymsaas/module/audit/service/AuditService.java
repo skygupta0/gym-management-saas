@@ -5,9 +5,7 @@ import com.gymsaas.module.audit.repository.AuditLogRepository;
 import com.gymsaas.module.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
@@ -36,6 +34,27 @@ public class AuditService {
                     .newValues(newValues)
                     .ipAddress(ipAddress)
                     .userAgent(userAgent)
+                    .build();
+
+            auditLogRepository.save(auditLog);
+            log.debug("Recorded audit log: action={}, entityType={}, entityId={}", action, entityType, entityId);
+        } catch (Exception e) {
+            log.error("Failed to write audit log: {}", e.getMessage(), e);
+        }
+    }
+
+    @Transactional
+    public void log(UUID tenantId, UUID actorUserId, String action, String entityType, UUID entityId, String summary) {
+        try {
+            AuditLog auditLog = AuditLog.builder()
+                    .tenantId(tenantId)
+                    .userId(actorUserId)
+                    .userEmail("SYSTEM")
+                    .userRole("SYSTEM")
+                    .action(action)
+                    .entityType(entityType)
+                    .entityId(entityId != null ? entityId.toString() : null)
+                    .newValues(summary != null ? Map.of("summary", summary) : null)
                     .build();
 
             auditLogRepository.save(auditLog);
