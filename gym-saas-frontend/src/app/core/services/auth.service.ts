@@ -66,6 +66,25 @@ export class AuthService {
     );
   }
 
+  forgotPassword(email: string): Observable<ApiResponse<void>> {
+    return this.http.post<ApiResponse<void>>(`${this.apiUrl}/forgot-password`, { email });
+  }
+
+  resetPassword(token: string, newPassword: string): Observable<ApiResponse<void>> {
+    return this.http.post<ApiResponse<void>>(`${this.apiUrl}/reset-password`, { token, newPassword });
+  }
+
+  getCurrentUser(): Observable<ApiResponse<User>> {
+    return this.http.get<ApiResponse<User>>(`${this.apiUrl}/me`).pipe(
+      tap(res => {
+        if (res.success && res.data) {
+          localStorage.setItem(USER_KEY, JSON.stringify(res.data));
+          this.currentUser.set(res.data);
+        }
+      })
+    );
+  }
+
   logout(): void {
     const refreshToken = this.tokenService.getRefreshToken();
     if (refreshToken) {

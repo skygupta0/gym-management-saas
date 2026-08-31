@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../../core/services/user.service';
 import { NotificationService } from '../../core/services/notification.service';
-import { Role, User, UserCreateRequest } from '../../core/models/auth.models';
+import { Role, User, UserCreateRequest, UserUpdateRequest } from '../../core/models/auth.models';
 import { FormErrorUtil } from '../../core/util/form-error.util';
 import { ModalComponent } from '../../shared/components/modal/modal.component';
 
@@ -128,12 +128,22 @@ import { ModalComponent } from '../../shared/components/modal/modal.component';
                       <span class="date-text">{{ formatDate(user.createdAt) }}</span>
                     </td>
                     <td style="text-align: right;">
-                      <button class="btn-icon danger" (click)="deleteUser(user)" title="Remove user">
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                          <polyline points="3 6 5 6 21 6"></polyline>
-                          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                        </svg>
-                      </button>
+                      <div class="actions-group">
+                        <button class="btn-icon" (click)="openEditModal(user)" title="Edit Employee">
+                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                          </svg>
+                        </button>
+                        @if (user.role !== 'GYM_OWNER') {
+                          <button class="btn-icon danger" (click)="deleteUser(user)" title="Remove Employee">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                              <polyline points="3 6 5 6 21 6"></polyline>
+                              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                            </svg>
+                          </button>
+                        }
+                      </div>
                     </td>
                   </tr>
                 }
@@ -226,6 +236,75 @@ import { ModalComponent } from '../../shared/components/modal/modal.component';
                 <span>Saving...</span>
               } @else {
                 <span>Create Staff Account</span>
+              }
+            </button>
+          </div>
+        </form>
+      </app-modal>
+
+      <!-- Edit Employee Modal -->
+      <app-modal [isOpen]="isEditModalOpen()" title="Edit Staff Member" (close)="closeEditModal()">
+        <form [formGroup]="editForm" (ngSubmit)="onSubmitEdit()" class="user-form" novalidate>
+          <div class="form-row">
+            <div class="form-group flex-1">
+              <label class="form-label">First Name *</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="firstName"
+                [class.is-invalid]="getEditFieldError('firstName')"
+              />
+              @if (getEditFieldError('firstName'); as err) {
+                <span class="form-error">{{ err }}</span>
+              }
+            </div>
+            <div class="form-group flex-1">
+              <label class="form-label">Last Name</label>
+              <input type="text" class="form-control" formControlName="lastName" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group flex-1">
+              <label class="form-label">Mobile Phone</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="9876543210"
+                formControlName="phone"
+                [class.is-invalid]="getEditFieldError('phone')"
+              />
+              @if (getEditFieldError('phone'); as err) {
+                <span class="form-error">{{ err }}</span>
+              }
+            </div>
+            <div class="form-group flex-1">
+              <label class="form-label">Assigned Role *</label>
+              <select class="form-control" formControlName="role">
+                <option value="TRAINER">Certified Trainer</option>
+                <option value="STAFF">Front Desk Staff</option>
+                <option value="GYM_ADMIN">Gym Administrator</option>
+                <option value="GYM_OWNER">Gym Owner</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Account Status</label>
+            <select class="form-control" formControlName="status">
+              <option value="ACTIVE">ACTIVE (Full access)</option>
+              <option value="INACTIVE">INACTIVE (Access suspended)</option>
+            </select>
+          </div>
+
+          <div class="modal-footer flex-between">
+            <button type="button" class="btn btn-secondary" (click)="closeEditModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary" [disabled]="isSubmitting()">
+              @if (isSubmitting()) {
+                <span class="spinner"></span>
+                <span>Saving Changes...</span>
+              } @else {
+                <span>Save Changes</span>
               }
             </button>
           </div>
@@ -382,11 +461,17 @@ import { ModalComponent } from '../../shared/components/modal/modal.component';
       color: var(--text-secondary);
     }
 
+    .actions-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
     .btn-icon {
-      background: transparent;
+      background: var(--bg-input);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-sm);
-      color: var(--text-muted);
+      color: var(--text-secondary);
       width: 30px;
       height: 30px;
       display: inline-flex;
@@ -394,6 +479,12 @@ import { ModalComponent } from '../../shared/components/modal/modal.component';
       justify-content: center;
       cursor: pointer;
       transition: all var(--transition-fast);
+    }
+
+    .btn-icon:hover {
+      background: var(--bg-card-hover);
+      color: var(--text-primary);
+      border-color: var(--border-hover);
     }
 
     .btn-icon.danger:hover {
@@ -425,6 +516,8 @@ export class UsersComponent implements OnInit {
   readonly isLoading = signal<boolean>(true);
   readonly isSubmitting = signal<boolean>(false);
   readonly isModalOpen = signal<boolean>(false);
+  readonly isEditModalOpen = signal<boolean>(false);
+  readonly editingUserId = signal<string | null>(null);
   readonly selectedRole = signal<Role | null>(null);
   readonly searchQuery = signal<string>('');
 
@@ -435,6 +528,14 @@ export class UsersComponent implements OnInit {
     password: ['', [Validators.required, Validators.minLength(6)]],
     phone: [''],
     role: ['TRAINER' as Role, [Validators.required]]
+  });
+
+  readonly editForm = this.fb.group({
+    firstName: ['', [Validators.required]],
+    lastName: [''],
+    phone: [''],
+    role: ['TRAINER' as Role, [Validators.required]],
+    status: ['ACTIVE', [Validators.required]]
   });
 
   ngOnInit(): void {
@@ -449,6 +550,14 @@ export class UsersComponent implements OnInit {
       phone: 'Phone number'
     };
     return FormErrorUtil.getErrorMessage(this.userForm.get(field), labels[field]);
+  }
+
+  getEditFieldError(field: 'firstName' | 'phone'): string | null {
+    const labels: Record<string, string> = {
+      firstName: 'First name',
+      phone: 'Phone number'
+    };
+    return FormErrorUtil.getErrorMessage(this.editForm.get(field), labels[field]);
   }
 
   loadUsers(): void {
@@ -496,6 +605,23 @@ export class UsersComponent implements OnInit {
     this.isModalOpen.set(false);
   }
 
+  openEditModal(user: User): void {
+    this.editingUserId.set(user.id);
+    this.editForm.patchValue({
+      firstName: user.firstName,
+      lastName: user.lastName || '',
+      phone: user.phone || '',
+      role: user.role,
+      status: user.status
+    });
+    this.isEditModalOpen.set(true);
+  }
+
+  closeEditModal(): void {
+    this.isEditModalOpen.set(false);
+    this.editingUserId.set(null);
+  }
+
   onSubmitUser(): void {
     if (this.userForm.invalid) {
       this.userForm.markAllAsTouched();
@@ -526,6 +652,42 @@ export class UsersComponent implements OnInit {
       error: (err) => {
         this.isSubmitting.set(false);
         FormErrorUtil.applyServerErrors(this.userForm, err);
+      }
+    });
+  }
+
+  onSubmitEdit(): void {
+    const userId = this.editingUserId();
+    if (!userId) return;
+
+    if (this.editForm.invalid) {
+      this.editForm.markAllAsTouched();
+      return;
+    }
+
+    this.isSubmitting.set(true);
+    const formVal = this.editForm.getRawValue();
+
+    const request: UserUpdateRequest = {
+      firstName: formVal.firstName!,
+      lastName: formVal.lastName || undefined,
+      phone: formVal.phone || undefined,
+      role: formVal.role as Role,
+      status: formVal.status as 'ACTIVE' | 'INACTIVE'
+    };
+
+    this.userService.updateUser(userId, request).subscribe({
+      next: (res) => {
+        this.isSubmitting.set(false);
+        if (res.success && res.data) {
+          this.notification.success('Employee Updated', `${res.data.fullName}'s profile was updated.`);
+          this.closeEditModal();
+          this.loadUsers();
+        }
+      },
+      error: (err) => {
+        this.isSubmitting.set(false);
+        FormErrorUtil.applyServerErrors(this.editForm, err);
       }
     });
   }

@@ -14,6 +14,16 @@ export const routes: Routes = [
     loadComponent: () => import('./features/auth/onboard/onboard.component').then(m => m.OnboardComponent),
     canActivate: [guestGuard]
   },
+  {
+    path: 'auth/forgot-password',
+    loadComponent: () => import('./features/auth/forgot-password/forgot-password.component').then(m => m.ForgotPasswordComponent),
+    canActivate: [guestGuard]
+  },
+  {
+    path: 'auth/reset-password',
+    loadComponent: () => import('./features/auth/reset-password/reset-password.component').then(m => m.ResetPasswordComponent),
+    canActivate: [guestGuard]
+  },
 
   // Authenticated App Routes within MainLayout
   {

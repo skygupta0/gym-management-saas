@@ -107,6 +107,7 @@ import { ToastContainerComponent } from '../../../shared/components/toast-contai
             <div class="form-group">
               <div class="flex-between">
                 <label class="form-label" for="password">Password</label>
+                <a routerLink="/auth/forgot-password" class="forgot-link">Forgot password?</a>
               </div>
               <div class="password-input-wrap">
                 <input
@@ -381,6 +382,18 @@ import { ToastContainerComponent } from '../../../shared/components/toast-contai
     .register-link {
       color: var(--primary-cyan);
       font-weight: 600;
+    }
+
+    .forgot-link {
+      font-size: 0.775rem;
+      color: var(--primary-cyan);
+      text-decoration: none;
+      font-weight: 500;
+      transition: opacity var(--transition-fast);
+    }
+
+    .forgot-link:hover {
+      text-decoration: underline;
     }
 
     @media (max-width: 992px) {
